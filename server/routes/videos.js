@@ -6,6 +6,8 @@ import {
   trend,
   random,
   sub,
+  getByTag,
+  search,
 } from '../controllers/video.js';
 
 const router = express.Router();
@@ -33,5 +35,11 @@ router.get('/random', random);
 
 // Get subscribed videos
 router.get('/sub', verifyToken, sub);
+
+// Get videos by tags
+router.get('/tags', getByTag);
+
+// Get videos by title
+router.get('/search', search);
 
 export default router;
