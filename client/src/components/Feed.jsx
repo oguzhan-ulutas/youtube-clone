@@ -3,9 +3,19 @@ import {Box, Stack, Typography} from "@mui/material"
 import { Link } from 'react-router-dom'
 import SideBar from './SideBar'
 import Videos from './Videos'
+import { fetchFromApi } from '../utils/FetchFromApi'
 
 
 function Feed() {
+    const [selectedCategory, setSelectedCategory] = useState("New")
+    const [videos, setVideos]= useState([])
+
+    useEffect(()=>{
+        fetchFromApi(`search?part=snippet&q=${selectedCategory}`)
+        .then((data)=>{
+            setVideos(data.items)
+        })
+    },[selectedCategory])
   return (
     <Stack
         sx={{
@@ -27,7 +37,10 @@ function Feed() {
             
         }
         >
-            <SideBar/>
+            <SideBar
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+            />
            
             <Typography
                 className='copyright'
@@ -54,11 +67,12 @@ function Feed() {
                 mb={2}
                 sx={{color:"white"}}
             >
-               New <span
+                {selectedCategory}
+             <span
                     style={{color:"#F31503"}}
                 >Videos</span>
             </Typography>
-            <Videos/>
+            <Videos videos={videos}/>
         </Box>
     </Stack>
   )
